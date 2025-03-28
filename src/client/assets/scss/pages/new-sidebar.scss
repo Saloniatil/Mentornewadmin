@@ -1,0 +1,159 @@
+.new-sidebar {
+  .profile-sidebar {
+    background-color: #fff;
+    border: 1px solid #e3e8eb;
+    margin-bottom: 30px;
+    overflow: hidden;
+    padding: 1.5rem;
+  }
+  .user-widget {
+    text-align: center; 
+  }
+.pro-avatar {
+    color: #1e88e5;
+    background-color: rgba(30, 136, 229, 0.2);
+    border: 3px solid #1e88e5;
+    font-size: 30px;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px;
+}
+.rating {
+    margin-bottom: 10px;
+}
+.mentor-type {
+    font-size: 14px;
+    color: #757575;
+    margin-bottom: 15px;
+}
+.progress-bar-custom {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    width: 100%;
+}
+.progress-bar-custom h6 {
+    color: #555;
+    font-size: 13px;
+    text-align: left;
+}
+.pro-progress {
+    text-transform: uppercase;
+    background-color: #ddd;
+    color: #555;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    border-radius: 4px;
+}
+.pro-progress .tooltip-toggle {
+    width: 90%;
+    height: 8px;
+    background-color: #1e88e5;
+    line-height: 8px;
+    color: white;
+    text-align: center;
+    border-radius: 4px;
+}
+.pro-progress .tooltip {
+    background: #1e88e5;
+    font-size: 13px;
+    bottom: 100%;
+    color: #fff;
+    display: block;
+    margin-bottom: 9px;
+    opacity: 1;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    width: 20%;
+    border-radius: 6px;
+    width: 45px;
+    height: 31px;
+    text-align: center;
+    padding-top: 5px;
+    left: 81%;
+    z-index: 99;
+}
+.pro-progress .tooltip:before {
+    content: " ";
+    display: block;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+.pro-progress .tooltip:after {
+    border-left: solid transparent 5px;
+    border-right: solid transparent 5px;
+    border-top: solid #1e88e5 5px;
+    bottom: -5px;
+    content: " ";
+    height: 0;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
+    width: 0;
+}
+.custom-sidebar-nav {
+    width: 100%;
+    position: relative;
+}
+.custom-sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.custom-sidebar-nav ul li {
+    display: block;
+    position: relative;
+    padding: 12px 0;
+    text-align: left;
+}
+.custom-sidebar-nav ul li a {
+    color: #26292c;
+    display: inline-block;
+    font-size: 15px;
+    width: 100%;
+    &:hover {
+        color: #1e88e5;
+        opacity: 1;
+    }
+}
+.custom-sidebar-nav ul li a i {
+    margin-right: 5px;
+    min-width: 23px;
+}
+.custom-sidebar-nav ul li a span {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+}
+.custom-sidebar-nav ul li a span i {
+    margin-right: 0;
+    min-width: inherit;
+}
+@media (max-width: 767.98px) {
+    .profile-sidebar {
+      margin-bottom: 20px;
+    }
+    .pro-avatar {
+        font-size: 24px;
+        width: 80px;
+        height: 80px;
+    }
+  }
+}
+.search-filter {
+    .react-datepicker-wrapper {
+        width: 100%;
+    }
+}

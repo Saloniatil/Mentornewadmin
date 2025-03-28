@@ -1,0 +1,188 @@
+.owl-carousel .owl-nav.disabled,
+.owl-carousel .owl-dots.disabled {
+    display: none;
+}
+
+.best-packages-section .slick-prev,
+.best-packages-section .slick-next {
+    display: none !important;
+}
+
+.test-slider-card .slick-prev {
+    display: none;
+}
+
+.popular-test-section .slick-list .slick-track .slick-slide div {
+    margin-right: 20px;
+}
+
+.about-us-section-fifteen.client-review-twelve .slick-slider {
+    position: static;
+}
+
+.slick-slider.best-package-slider.owl-carousel.slick-initialized .slick-dots li.slick-active button {
+    background: #0092E4;
+    border-radius: 10px !important;
+
+}
+
+.best-package-slider .slick-list .slick-track .slick-slide div {
+    margin-right: 20px;
+}
+
+.slick-slider.best-package-slider.owl-carousel.slick-initialized .slick-dots li button {
+    width: 32px;
+    height: 6px;
+}
+
+.banner-sec-twelve .css-13cymwt-control {
+    border-width: 0px !important;
+    padding-left: 10px
+}
+
+.popular-test-section .slick-prev ,
+.popular-test-section .slick-next {
+    display: none !important;
+}
+
+.banner-sec-twelve .input-box-twelve .input-block:nth-child(2):before {
+    left: 2px;
+    top: 7px;
+}
+.css-1u9des2-indicatorSeparator {
+    display: none !important;
+}
+.home-pg-twelve.main-wrapper {
+    font-family: "Inter", sans-serif;
+}
+.swiper.swiper-slider-banner {
+    overflow: visible;
+}
+.header-four .header-navbar-rht li a.header-login {
+	background: #FF875A;
+	color: #fff;
+	text-transform: capitalize;
+	padding: 9px 32px!important;
+	border: 1px solid #FF875A;
+	transition: 0.5s all;
+}
+.home-slide-five::before {
+    background: url(../assets/images/bg/home-four-bg-01.png);
+    content: "";
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    background-position: left top;
+    position: absolute;
+}
+.user-review-slide .slick-slider button,
+.trend-course-tab-slider .slick-slider button,
+.instructor-slider .slick-slider button,
+.job-area-slider .slick-slider button,
+.instructor-slider-two .slick-slider button,
+.popular-course-slide-two .slick-slider button{
+    display: none !important;
+}
+.trend-course-tab-slider .slick-slider .slick-dots{
+    background: #A8A8A8;
+    border-radius: 10px;
+    border: 0;
+    width: 10px;
+    height: 7px;
+    margin-top:26px;
+
+}
+.slick-dots{
+    text-align:center;
+}
+/* .slick-dots .slick-active{
+    background: #1E88E5;
+    width: 40px;
+} */
+.banner-wrapper .banner-header h1 {
+    margin-bottom: 5px !important;
+    font-size: 54px !important;
+    font-weight: bold !important;
+    color: #ffffff;
+  }
+  .browse-cat-slider.owl-carousel .owl-nav button.owl-prev {
+    position: absolute;
+    top: 12%;
+    left: -45px;
+    transform: translateY(-50%);
+}
+.browse-cat-slider.owl-carousel .owl-nav button.owl-next {
+    position: absolute;
+    top: 9%;
+
+}
+.header-one .main-menu-wrapper {
+    margin-right: auto;
+}
+.header-one .header-navbar-rht {
+    margin-left: 0 !important;
+}
+.instructor-slider-two  .owl-nav button.owl-prev {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #E9F0FF;
+    background: #fff;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -100px;
+    right: 50px;
+}
+.instructor-slider-two  .owl-nav button.owl-next {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #E9F0FF;
+    background: #fff;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -100px;
+    right: 0px;
+  }
+  .search-box.search-three .search-location {
+    flex: 1;
+}
+.custom-select .css-t3ipsp-control{
+   box-shadow:none;
+   border:none;
+}
+.custom-select.css-b62m3t-container .css-13cymwt-control{
+    box-sizing: none;
+    border:0;
+}
+.testi-customer-slider .owl-nav button.owl-next{
+    margin-left: 0px;
+}
+.footer-one.footer-five .footer-widget ul li a {
+    color: #7D858F !important;
+    font-size: 16px !important;
+}
+.footer-one .footer-menu ul li a {
+    font-size: 16px !important;
+    font-weight: 400;
+    color: #7D858F !important;
+}
+.headertwo .main-menu-wrapper {
+    margin-left: auto !important;
+}
+.sec-para.owl-custom-nav{
+    margin-left:100px;
+}
+.search-box.search-three .search-location {
+    flex: 1 !important;
+}
+.main-wrapper-three .back-to-top-icon{
+    background: #1E88E5;
+}
+.footer-one .footer-top {
+    padding: 80px 0px;
+}
