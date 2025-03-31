@@ -132,7 +132,7 @@ const AppUniversal = function () {
             <Route path="/admin/subadmin/list" element={<Subadminlist />} />
             <Route path="/admin/subadmin/create" element={<CreateSubadmin />} />
 
-            <Route path="/admin/subadmin/edit/:id" element={<CreateSubadmin />} />
+            <Route path="/admin/subadmin/edit/:staffId" element={<CreateSubadmin />} />
 
 
             <Route

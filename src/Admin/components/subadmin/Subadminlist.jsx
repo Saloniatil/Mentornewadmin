@@ -5,16 +5,17 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../../../Helper/apicall";
 import SidebarNav from "../sidebar";
-import Pagination from "../Pagination/Pagination";
+// import Pagination from "../Pagination/Pagination";
 import ShowPermissions from "../CustomModals/ShowPermission";
 import { toast } from "react-toastify";  
 import { Spinner } from "react-bootstrap";
+import { Formik, Form, Field } from "formik";
 
 const Subadminlist = () => {
     const [showPermision, setShowPermision] = useState(false);
     const [subadmin, setSubadmin] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    
     useEffect(() => {
         fetchStaffList();
     }, []);
@@ -139,7 +140,7 @@ const Subadminlist = () => {
                                     )}
                                 </div>
                                 <div className="d-flex justify-content-end mt-3">
-                                    <Pagination current={1} total={5} pagination={() => { }} />
+                                    {/* <Pagination current={1} total={5} pagination={() => { }} /> */}
                                 </div>
                             </div>
                         </div>

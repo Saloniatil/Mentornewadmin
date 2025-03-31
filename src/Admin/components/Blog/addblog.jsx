@@ -101,7 +101,6 @@ const AddBlog = () => {
   const handleSubmit = async (values, { resetForm }) => {
     setLoading(true);
     try {
-      debugger
       const formData = new FormData();
       formData.append("name", values.blogName);
       formData.append("category", values.blogCategory);
