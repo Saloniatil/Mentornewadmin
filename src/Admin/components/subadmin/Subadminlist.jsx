@@ -7,9 +7,12 @@ import { API_BASE_URL } from "../../../Helper/apicall";
 import SidebarNav from "../sidebar";
 // import Pagination from "../Pagination/Pagination";
 import ShowPermissions from "../CustomModals/ShowPermission";
-import { toast } from "react-toastify";  
 import { Spinner } from "react-bootstrap";
 import { Formik, Form, Field } from "formik";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
 
 const Subadminlist = () => {
     const [showPermision, setShowPermision] = useState(false);
@@ -47,6 +50,40 @@ const Subadminlist = () => {
     useEffect(() => {
         fetchStaffList();
     }, []);
+
+/// delete subadmin 
+const deleteBlogHandler = async (id) => {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(`${API_BASE_URL}/api/admin/deleteStaff/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.status === 200) {
+                toast.success("Admin Staff and associated Role Permissions deleted successfully!", { position: "top-right" });
+                
+                // Fetch updated list after deletion
+                fetchStaffList();
+            }
+        } catch (error) {
+            console.error("Error deleting subadmin:", error);
+            toast.error("Failed to delete subadmin", { position: "top-right" });
+        }
+    }
+};
 
 
     return (
@@ -123,7 +160,7 @@ const Subadminlist = () => {
                                                                         <Link to={`/admin/subadmin/edit/${staff.id}`} className="me-2">
                                                                             <MdEdit fontSize={"18px"} />
                                                                         </Link>
-                                                                        <MdDelete fontSize={"18px"} className="text-danger delete-icon" />
+                                                                        <MdDelete fontSize={"18px"} className="text-danger delete-icon"  onClick={() => deleteBlogHandler(staff.id)}  />
                                                                     </div>
                                                                 </td>
                                                             </tr>

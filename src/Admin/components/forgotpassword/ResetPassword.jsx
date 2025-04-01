@@ -18,14 +18,20 @@ const ResetPassword = () => {
     const [resetToken, setResetToken] = useState("");
 
     useEffect(() => {
-        const storedToken = localStorage.getItem("resetPasswordToken");
-        console.log("storedtoken:", storedToken);
-        if (storedToken) 
-            setResetToken(storedToken);
+        // Extract token from URL query params
+        const params = new URLSearchParams(location.search);
+        const tokenFromUrl = params.get("token");
+        console.log("tokenurl:", tokenFromUrl)
 
-    }, []);
-    
+        if (!tokenFromUrl) {
+            toast.error("Reset token is missing! Redirecting to login...", { position: "top-right" });
+            navigate("/login"); // Redirect to login if token is missing
+        } else {
+            setResetToken(tokenFromUrl); // Set the token in state
+        }
+    }, [location, navigate]);
 
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
@@ -44,7 +50,7 @@ const ResetPassword = () => {
         try {
             const response = await axios.post(
                 `${API_BASE_URL}/api/admin/resetPasswordAdmin`,
-                { token: resetToken, newPassword: newPassword }, // ✅ Ensure token is included
+                { token: resetToken, newPassword: newPassword }, // Ensure token is included
                 { headers: { "Content-Type": "application/json" } }
             );
     

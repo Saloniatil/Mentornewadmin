@@ -32,6 +32,8 @@ const Header = (props) => {
   // };
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [ logout, setLogout] = useState(false);
+
   const token = localStorage.getItem("token");
   
   const handlesidebar = () => {
@@ -52,9 +54,15 @@ const Header = (props) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    navigate("/admin/login"); // Redirect to login page
+   localStorage.removeItem("token"); // Remove token from local storage
+   setLogout(true); // Immediately navigate to login page
   };
+  
+  useEffect(() => {
+    if (logout) {
+      navigate("/admin/login"); // Redirect to login page after logout
+    }
+  }, [logout, navigate]);
 
   useEffect(() => {
     const profileDetail = async () => {

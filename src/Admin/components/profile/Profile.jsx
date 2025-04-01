@@ -12,7 +12,8 @@ const Profile = () => {
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    profileImage: ""
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,26 @@ const Profile = () => {
     confirmPassword: "",
   });
   const [passwordErrors, setPasswordErrors] = useState({});
+  const [previewImage, setPreviewImage] = useState(""); // For instant preview
+  const [selectedFile, setSelectedFile] = useState(null); // Holds selected file
+  const [profileImage, setProfileImage] = useState(""); // Stores saved profile image
 
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+  
+    if (file && file.type.startsWith("image/")) {
+      setSelectedFile(file);
+  
+      // Show instant preview
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
+    } else {
+      toast.error("Please select a valid image file (JPG, PNG, etc.)");
+    }
+  };
+  
+  
   // Fetch Profiledetail from API
   useEffect(() => {
     const profileDetail = async () => {
@@ -49,27 +69,38 @@ const Profile = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevData) => ({...prevData, [name]: value}));
+    setUserData((prevData) => ({ ...prevData, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
   };
+
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Create a copy of userData without 'id'
-    const { id, ...filteredUserData } = userData;
+    if (!selectedFile) return; 
+  
+    console.log("Before Save:", profileImage);  
+
+    const formData = new FormData();
+    formData.append("profileImage", selectedFile);
+  
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/admin/profileUpdate`,
-        filteredUserData, // Send data without 'id'
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
+        formData,
+        { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
       );
+  
       if (response.data.status === 200) {
         toast.success("Profile updated successfully!");
-        // setUserData(response.data);
-
+  
+        const updatedImageUrl = `${API_BASE_URL}/${response.data.profileImage}?t=${Date.now()}`;
+        
+        console.log("After Save:", updatedImageUrl);  
+        
+        setProfileImage(updatedImageUrl); // Update state with new image URL
+        setPreviewImage(""); // Reset preview
+        setSelectedFile(null);
       } else {
         toast.error(response.data.message || "Profile update failed.");
       }
@@ -78,6 +109,7 @@ const Profile = () => {
       toast.error("Error updating profile.");
     }
   };
+  
 
   //// Confirm password
   const handlePasswordChange = (e) => {
@@ -120,8 +152,8 @@ const Profile = () => {
     }
   };
 
-   // Validation function
-   const validate = () => {
+  // Validation function
+  const validate = () => {
     let newErrors = {};
     if (!userData.firstName) newErrors.firstName = "First Name is required";
     if (!userData.lastName) newErrors.lastName = "Last Name is required";
@@ -135,7 +167,40 @@ const Profile = () => {
     setSelectedDate1(date);
   };
 
+  // Upload profile image
+  // Upload profile image and update state
+  const uploadProfileImage = async (formData) => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/admin/profileUpdate`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        toast.success("Profile image updated successfully!");
+        setUserData((prevData) => ({
+          ...prevData,
+          profileImage: response.data.profileImage, // Update with new image URL from API
+        }));
+      } else {
+        toast.error("Failed to update profile image.");
+      }
+    } catch (error) {
+      toast.error("Error updating profile image.");
+    }
+  };
 
+  useEffect(() => {
+    if (profileImage) {
+      setProfileImage(profileImage + "?t=" + Date.now()); // Force reload
+    }
+  }, [profileImage]);
+  
   return (
     <>
       <SidebarNav />
@@ -156,29 +221,25 @@ const Profile = () => {
               <div className="profile-header">
                 <div className="row align-items-center">
                   <div className="col-auto profile-image">
-                    {/* <Link href="#">
+                    <label htmlFor="profileImageInput">
                       <img
                         className="rounded-circle"
                         alt="User Image"
-                        src={API_BASE_URL + '/' + userData?.profileImage}
+                        src={previewImage || `${API_BASE_URL}/${profileImage}?t=${Date.now()}`}
+                        style={{ cursor: "pointer" }}
                       />
-                    </Link> */}
-                    <Link href="#">
-                      <img
-                        className="rounded-circle"
-                        alt="User Image"
-                        src={
-                          userData?.profileImage
-                            ? `${API_BASE_URL}/${userData.profileImage}`
-                            : avatar12 // Use imported image as fallback
-                        }
-                        onError={(e) => { e.target.src = avatar12; }} // Fallback if the image fails to load
-                      />
-                    </Link>
+                    </label>
+                    <input
+                      type="file"
+                      id="profileImageInput"
+                      accept="image/*" 
+                      style={{ display: 'none' }} // Hide file input
+                      onChange={handleImageChange}
+                    />
                   </div>
                   <div className="col ml-md-n2 profile-user-info">
                     <h4 className="user-name mb-0">{userData?.firstName || ""} {userData?.lastName || ""}</h4>
-                    <h6 className="text-muted">{userData?.email || ""}</h6>
+                    <h6 className="text-muted">{userData?.email || ""} </h6>
                   </div>
                 </div>
               </div>
@@ -222,7 +283,6 @@ const Profile = () => {
                                 <label>Email ID</label>
                                 <input
                                   type="email"
-                                  disabled
                                   name="email"
                                   className="form-control"
                                   onChange={handleChange}

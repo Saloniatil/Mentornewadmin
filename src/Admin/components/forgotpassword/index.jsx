@@ -13,23 +13,11 @@ const ForgotPassword = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const token = localStorage.getItem("token");
-  
-      if (!token) {
-        toast.error("Authorization token is required! Please log in again.", { position: "top-right" });
-        return;
-      }
-      
       const response = await axios.post(
         `${API_BASE_URL}/api/admin/forgotPassword`,
-        { email: values.email }, // Sending the email entered in the form
-        {
-          headers: {
-            Authorization: `Bearer ${token.trim()}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
+        { email: values.email }
+      
+      ); 
       if (response.status === 200) {
         const resetToken = response.data.data.resetPasswordToken;
         localStorage.setItem("resetPasswordToken", resetToken);

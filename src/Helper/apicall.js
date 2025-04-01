@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export const API_BASE_URL = `http://3.108.129.119:8080`
+export const API_BASE_URL = `https://g70bg47x-3010.inc1.devtunnels.ms`
+// `http://3.108.129.119:8080`
 // 'http://3.108.129.119:3011';  
 const apiCall = async (method, endpoint, data = null, params = null) => {
     try {

@@ -4,8 +4,90 @@ import LineChart from "./LineChart";
 import StatusCharts from "./StatusCharts";
 
 import { Link } from "react-router-dom";
+import { ExportToExcel } from "./ExportToExcel";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../../../Helper/apicall";
+
 
 const Dashboard = () => {
+
+  const [excelData, setExcelData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   const fetchCategory = async () => {
+  //     try {
+  //       const response = await axios.get(`${API_BASE_URL}/api/admin/getEarlyAccess`, {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       });
+  //       if (response.data.status === 200) {
+  //         setExcelData(response.data.data);
+  //       }
+  //       const customHeadings = data.map(item => ({
+  //         "Name": item?.Name,  // First "Payment Id"
+  //         "Email": item?.Email,                 // Then "User Name"
+  //         "UserType": item?.userType,
+  //         "Date":item?.Date     // Lastly "Cancel Reason"
+  //       }));
+
+  //       setExcelData(customHeadings);
+
+  //     } catch (error) {
+  //       toast.error("Failed to fetch categories. Please try again later");
+  //     }
+  //   };
+  //   fetchCategory();
+  // }, []);
+  useEffect(() => {
+    // Debug log to confirm the effect is running
+    console.log("Dashboard component mounted, attempting to fetch early access data");
+    
+    const fetchEarlyAccessData = async () => {
+      const apiUrl = `${API_BASE_URL}/api/admin/getEarlyAccess`;
+      console.log("Attempting API call to:", apiUrl);  
+      try {
+        // Get token from localStorage
+        const token = localStorage.getItem("token");
+        console.log("Token available:", !!token); // Log if token exists, not the actual token
+        
+        // Make the API call
+        const response = await axios.get(apiUrl, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        
+        console.log("API response received:", response.status);
+        
+        if (response.data.status === 200) {
+          console.log("Early access data:", response.data.data);
+          
+          // Transform the data
+          const formattedData = response.data.data.map(item => ({
+            "Name": item?.name || "",
+            "Email": item?.email || "",
+            "UserType": item?.userType || "",
+            "Date": item?.createdAt ? new Date(item.createdAt).toLocaleDateString() : ""
+          }));
+          
+          setExcelData(formattedData);
+          console.log("Excel data set:", formattedData);
+        } else {
+          console.error("API returned non-200 status:", response.data);
+          toast.error("Failed to fetch early access data: " + response.data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching early access data:", error);
+        toast.error("Failed to fetch early access data: " + (error.message || "Unknown error"));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchEarlyAccessData();
+  }, []);
+
+  // Add a debug render to confirm data state
+  console.log("Current excelData state:", excelData);
+
   return (
     <>
       <div className="main-wrapper">
@@ -15,11 +97,19 @@ const Dashboard = () => {
           <div className="content container-fluid pb-0">
             <div className="page-header">
               <div className="row">
-                <div className="col-sm-12">
+                <div className="col-sm-9">
                   <h3 className="page-title">Welcome Admin!</h3>
                   <ul className="breadcrumb">
                     <li className="breadcrumb-item active">Dashboard</li>
                   </ul>
+                </div>
+                <div className="col-sm-3">
+                  {/* <ExportToExcel apiData={excelData} fileName="EarlyAccess" /> */}
+                  {isLoading ? (
+                    <div>Loading data...</div>
+                  ) : (
+                    <ExportToExcel apiData={excelData} fileName="EarlyAccess" />
+                  )}
                 </div>
               </div>
             </div>
@@ -68,19 +158,14 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </Link>
-
               </div>
               <>
                 <div className="col-xl-3 col-sm-6 col-12">
-
-
                   <div className="card">
-
                     <div className="card-body">
                       <div className="dash-widget-header blue-round">
                         <span className="dash-widget-icon text-primary-new">
                           <i className="fe fe-star-o" />
-
                         </span>
                         <div className="dash-count">
                           <h3>168</h3>
@@ -93,9 +178,7 @@ const Dashboard = () => {
                         </div>
                       </div>
                     </div>
-
                   </div>
-
                 </div>
 
                 <div className="col-xl-3 col-sm-6 col-12">
@@ -315,7 +398,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div className="dash-widget-info">
-                          <h6 className="text-muted">Total <strong stye={{color:'black'}}>VAT</strong>  on Commission (Remitted)</h6>
+                          <h6 className="text-muted">Total <strong stye={{ color: 'black' }}>VAT</strong>  on Commission (Remitted)</h6>
                           <div className="progress progress-sm blue-prgrees">
                             <div className="green-prgrees w-50" />
                           </div>

@@ -51,61 +51,43 @@ import AddGoals from "./components/AreaOfGoals/AddGoals";
 import GoalList from "./components/AreaOfGoals/GoalList";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "../utils/ProtectedRoute"
+import ProtectedRoute from "../utils/ProtectedRoute";
+
 const AppUniversal = function () {
   const [menu, setMenu] = useState(false);
-  const toggleMobileMenu = () => {
-    setMenu(!menu);
-  };
+  const toggleMobileMenu = () => {setMenu(!menu);};
   const { isAuth, setIsAuth } = useContext(Appcontext);
-
   const location = window?.location;
-
   console.log("location", location?.pathname);
-  useMemo(() => {
-    if (
-      location?.pathname == "/admin/login" ||
-      location?.pathname == "/admin/register" ||
-      location?.pathname == "/admin/forgotPassword" ||
-      location?.pathname == "/admin/conform-email" ||
-      location?.pathname == "/admin/404" ||
-      location?.pathname == "/admin/500"
-    ) {
-      setIsAuth("admin");
-    } else {
-      setIsAuth("user");
-    }
-  }, [location]);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+ // Determine if the header should be shown based on the current route
+ const showHeader =
+ location.pathname !== "/admin/login" &&
+ location.pathname !== "/admin/register" &&
+ location.pathname !== "/admin/forgotPassword" &&
+ location.pathname !== "/admin/resetPassword" &&
+ location.pathname !== "/admin/conform-email" &&
+ location.pathname !== "/admin/404" &&
+ location.pathname !== "/admin/500";
 
-  //   if (!token) {
-  //     setIsAuth(null);
-  //     return;
-  //   }
-
-  //   if (
-  //     location?.pathname == "/admin/login" ||
-  //     location?.pathname == "/admin/register" ||
-  //     location?.pathname == "/admin/forgotPassword" ||
-  //     location?.pathname == "/admin/conform-email" ||
-  //     location?.pathname == "/admin/404" ||
-  //     location?.pathname == "/admin/500"
-  //   ) {
-  //     setIsAuth("admin");
-  //   } else {
-  //     setIsAuth("user");
-  //   }
-  // }, [location]);
-  // console.log("isAuth:", isAuth);
-
-
-
+useMemo(() => {
+ if (
+   location.pathname === "/admin/login" ||
+   location.pathname === "/admin/register" ||
+   location.pathname === "/admin/forgotPassword" ||
+   location.pathname === "/admin/conform-email" ||
+   location.pathname === "/admin/404" ||
+   location.pathname === "/admin/500"
+ ) {
+   setIsAuth("admin");
+ } else {
+   setIsAuth("user");
+ }
+}, [location]);
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
       <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
-        {
+        {/* {
           location?.pathname == "/admin/login" ||
             location?.pathname == "/admin/register" ||
             location?.pathname == "/admin/forgotPassword" ||
@@ -116,18 +98,18 @@ const AppUniversal = function () {
           ) :
             <Header onMenuClick={() => toggleMobileMenu()}
             />
-        }
+        } */}
+        {showHeader && <Header onMenuClick={() => toggleMobileMenu()} />}
+
         <Routes>
           <Route path="/admin/register" element={<Register />} />
           <Route path="/admin/forgotPassword" element={<ForgotPassword />} />
-          <Route
-            path="/admin/resetPassword"
-            element={<ResetPassword />}
-          />
+
+          <Route  path="/admin/resetPassword" element={<ResetPassword />}  />
           
           <Route path="/admin/login" element={<Login />} />
 
-          <Route element={<ProtectedRoute> </ProtectedRoute>}>
+          <Route element={<ProtectedRoute />}>
           
             <Route path="/admin/subadmin/list" element={<Subadminlist />} />
             <Route path="/admin/subadmin/create" element={<CreateSubadmin />} />
@@ -164,9 +146,7 @@ const AppUniversal = function () {
               element={<Commission />}
             />
             <Route
-              path="/admin/transactions-list"
-
-              element={<Transaction />}
+              path="/admin/transactions-list"  element={<Transaction />}
             />
             <Route path="/admin/settings" element={<Settings />} />
             <Route path="/admin/generalsettings" element={<GendralSettings />} />
@@ -231,7 +211,8 @@ const AppUniversal = function () {
             <Route path="/admin/category-list" element={<CategoryList />} />
             <Route path="/admin/edit-category/:id" element={<AddCategory />} />
             <Route path="/admin/add-category" element={<AddCategory />} />
-            </Route>
+         </Route>
+         
             <Route path="/*" element={<Navigate to="/admin/login" replace />} />
 
         </Routes>
