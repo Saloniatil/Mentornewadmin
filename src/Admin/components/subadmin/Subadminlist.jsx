@@ -62,6 +62,7 @@ const deleteBlogHandler = async (id) => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
     });
+    // ewewewe
 
     if (result.isConfirmed) {
         try {
