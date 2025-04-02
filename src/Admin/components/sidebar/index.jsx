@@ -309,9 +309,6 @@ const SidebarNav = () => {
                     <span>Blogs</span>
                   </Link>
                 </li>
-
-
-
                 <li
                   className={
                     pathname?.includes("settings") ||

@@ -65,10 +65,10 @@ function ShowPermissions({ show, handleClose,  }) {
                             data.map((module, index) => (
                                 <tr key={index}>
                                     <td>{module.name}</td>
-                                    <td>{module.permissions.view ? "✔️" : "❌"}</td>
-                                    <td>{module.permissions.create ? "✔️" : "❌"}</td>
-                                    <td>{module.permissions.update ? "✔️" : "❌"}</td>
-                                    <td>{module.permissions.delete ? "✔️" : "❌"}</td>
+                                    <td>{module.permissions.view === 1 ? "✔️" : "❌"}</td>
+                                    <td>{module.permissions.create === 1 ? "✔️" : "❌"}</td>
+                                    <td>{module.permissions.update === 1 ? "✔️" : "❌"}</td>
+                                    <td>{module.permissions.delete === 1 ? "✔️" : "❌"}</td>
                                 </tr>
                             ))
                         ) : (

@@ -9,7 +9,7 @@ import Dashboard from "./components/dashboard";
 import Appointments from "./components/appointments";
 import Specialities from "./components/specialities";
 import Mentor from "./components/mentor";
-import Subadminlist from "./components/subadmin/Subadminlist";
+import Subadminlist from "./components/Subadmin/Subadminlist";
 import Mentee from "./components/mentee";
 import Reviews from "./components/reviews";
 import Transaction from "./components/transaction";
@@ -52,6 +52,7 @@ import GoalList from "./components/AreaOfGoals/GoalList";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "../utils/ProtectedRoute";
+import { AuthProvider } from "./components/context/AuthContext";
 
 const AppUniversal = function () {
   const [menu, setMenu] = useState(false);
@@ -60,29 +61,32 @@ const AppUniversal = function () {
   const location = window?.location;
   console.log("location", location?.pathname);
  // Determine if the header should be shown based on the current route
- const showHeader =
- location.pathname !== "/admin/login" &&
- location.pathname !== "/admin/register" &&
- location.pathname !== "/admin/forgotPassword" &&
- location.pathname !== "/admin/resetPassword" &&
- location.pathname !== "/admin/conform-email" &&
- location.pathname !== "/admin/404" &&
- location.pathname !== "/admin/500";
+ useEffect(() => {
+  if (
+    location.pathname === "/admin/login" ||
+    location.pathname === "/admin/register" ||
+    location.pathname === "/admin/forgotPassword" ||
+    location.pathname === "/admin/conform-email" ||
+    location.pathname === "/admin/404" ||
+    location.pathname === "/admin/500"
+  ) {
+    setIsAuth("admin");
+  } else {
+    setIsAuth("user");
+  }
+}, [location.pathname]); // Depend on pathname changes
 
-useMemo(() => {
- if (
-   location.pathname === "/admin/login" ||
-   location.pathname === "/admin/register" ||
-   location.pathname === "/admin/forgotPassword" ||
-   location.pathname === "/admin/conform-email" ||
-   location.pathname === "/admin/404" ||
-   location.pathname === "/admin/500"
- ) {
-   setIsAuth("admin");
- } else {
-   setIsAuth("user");
- }
-}, [location]);
+const showHeader = useMemo(() => {
+  return ![
+    "/admin/login",
+    "/admin/register",
+    "/admin/forgotPassword",
+    "/admin/resetPassword",
+    "/admin/conform-email",
+    "/admin/404",
+    "/admin/500"
+  ].includes(location.pathname);
+}, [location.pathname]);
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -99,7 +103,7 @@ useMemo(() => {
             <Header onMenuClick={() => toggleMobileMenu()}
             />
         } */}
-        {showHeader && <Header onMenuClick={() => toggleMobileMenu()} />}
+       {showHeader && <Header onMenuClick={toggleMobileMenu} />}
 
         <Routes>
           <Route path="/admin/register" element={<Register />} />
@@ -170,7 +174,6 @@ useMemo(() => {
             <Route path="/admin/faq-add" element={<Faq />} />
             <Route path="/admin/edit-faq/:id" element={<Faq />} />
             <Route path="/admin/faq" element={<FaqList />} />
-
             <Route
               path="/admin/dispute-management"
               element={<DisputeList />}
@@ -194,11 +197,7 @@ useMemo(() => {
             <Route path="/admin/pending-mentors" element={<Mentor />} />
             <Route path="/admin/mentor-detail/:id" element={<MentorDetail />} />
 
-            <Route
-              path="/admin/mentee-sessions/:id"
-
-              element={<MenteeSession />}
-            />
+            <Route path="/admin/mentee-sessions/:id"  element={<MenteeSession />}/>
 
             <Route
               path="/admin/mentor-tracks/:id"

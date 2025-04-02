@@ -93,7 +93,6 @@ const CategoryList = () => {
     return (
         <>
             <SidebarNav />
-            <ToastContainer />
             <div className="page-wrapper">
                 <div className="content container-fluid">
                     {/* Page Header */}

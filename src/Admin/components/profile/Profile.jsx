@@ -26,45 +26,52 @@ const Profile = () => {
   const [passwordErrors, setPasswordErrors] = useState({});
   const [previewImage, setPreviewImage] = useState(""); // For instant preview
   const [selectedFile, setSelectedFile] = useState(null); // Holds selected file
-  const [profileImage, setProfileImage] = useState(""); // Stores saved profile image
-
+  const [profileImage, setProfileImage] = useState(null);  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
   
     if (file && file.type.startsWith("image/")) {
       setSelectedFile(file);
-  
       // Show instant preview
       const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+      setPreviewImage(imageUrl);
+      // setProfileImage(imageUrl);
     } else {
       toast.error("Please select a valid image file (JPG, PNG, etc.)");
     }
   };
-  
-  
+
   // Fetch Profiledetail from API
   useEffect(() => {
     const profileDetail = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
         const response = await axios.get(`${API_BASE_URL}/api/admin/profileDetail`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
+  
         if (response.data.status === 200) {
           setUserData(response.data.data);
+  
+          // Update profile image only if it exists
+          if (response.data.data.profileImage) {
+            const imageUrl = `${API_BASE_URL}/${response.data.data.profileImage}?t=${Date.now()}`;
+            setProfileImage(imageUrl);
+          }
         } else {
-          console.error("Error fetching FAQs:", response.data.message);
+          console.error("Error fetching profile details:", response.data.message);
         }
       } catch (error) {
         console.error("API Error:", error);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
+  
     profileDetail();
   }, [token]);
+  
 
   // Handle input change
   const handleChange = (e) => {
@@ -79,8 +86,6 @@ const Profile = () => {
     e.preventDefault();
     if (!selectedFile) return; 
   
-    console.log("Before Save:", profileImage);  
-
     const formData = new FormData();
     formData.append("profileImage", selectedFile);
   
@@ -96,8 +101,6 @@ const Profile = () => {
   
         const updatedImageUrl = `${API_BASE_URL}/${response.data.profileImage}?t=${Date.now()}`;
         
-        console.log("After Save:", updatedImageUrl);  
-        
         setProfileImage(updatedImageUrl); // Update state with new image URL
         setPreviewImage(""); // Reset preview
         setSelectedFile(null);
@@ -109,6 +112,7 @@ const Profile = () => {
       toast.error("Error updating profile.");
     }
   };
+  
   
 
   //// Confirm password
@@ -169,32 +173,7 @@ const Profile = () => {
 
   // Upload profile image
   // Upload profile image and update state
-  const uploadProfileImage = async (formData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/api/admin/profileUpdate`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      if (response.data.status === 200) {
-        toast.success("Profile image updated successfully!");
-        setUserData((prevData) => ({
-          ...prevData,
-          profileImage: response.data.profileImage, // Update with new image URL from API
-        }));
-      } else {
-        toast.error("Failed to update profile image.");
-      }
-    } catch (error) {
-      toast.error("Error updating profile image.");
-    }
-  };
-
+ 
   useEffect(() => {
     if (profileImage) {
       setProfileImage(profileImage + "?t=" + Date.now()); // Force reload
@@ -225,7 +204,8 @@ const Profile = () => {
                       <img
                         className="rounded-circle"
                         alt="User Image"
-                        src={previewImage || `${API_BASE_URL}/${profileImage}?t=${Date.now()}`}
+                        src={previewImage || profileImage } 
+                        // src={previewImage || `${API_BASE_URL}/${profileImage}?t=${Date.now()}`}
                         style={{ cursor: "pointer" }}
                       />
                     </label>

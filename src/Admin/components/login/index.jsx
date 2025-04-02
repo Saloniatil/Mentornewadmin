@@ -15,8 +15,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Added loading state
   const [loginSuccess, setLoginSuccess] = useState(false);
-//dd
-   //hgkhjk
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     setLoading(true);
@@ -25,9 +23,10 @@ const Login = () => {
       const response = await axios.post(`${API_BASE_URL}/api/admin/login`, values);
       console.log("Response:", response);
       if (response.status === 200 && response.data.data.token) {
-        // localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("token", response.data.data.token);
         // setLoginSuccess(true);  
         localStorage.setItem("loginSuccess", "true");  // Set loginSuccess flag
+        window.location.href = "/admin"
         navigate("/admin");  
         // Success toast message
         toast.success("Login Successful!", { position: "top-right" });

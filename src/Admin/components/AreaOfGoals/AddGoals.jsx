@@ -128,7 +128,7 @@ const AddGoals = () => {
                                                                 <option value="Active">Active</option>
                                                                 <option value="Inactive">Inactive</option>
                                                             </Field>
-                                                            <ErrorMessage name="status" component="div" className="text-danger" />
+                                                            {/* <ErrorMessage name="status" component="div" className="text-danger" /> */}
                                                         </div>
                                                     </div>
                                                 </div>

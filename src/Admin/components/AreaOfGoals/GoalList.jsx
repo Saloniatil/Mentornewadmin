@@ -14,7 +14,7 @@ const GoalList = () => {
     const [goals, setGoals] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPage, setTotalPages] = useState(1);
-    const [limit, setLimit] = useState(3);
+    const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true); // New state for loader
     const navigate = useNavigate();
@@ -104,7 +104,6 @@ const GoalList = () => {
     return (
         <>
             <SidebarNav />
-            <ToastContainer />
             <div className="page-wrapper">
                 <div className="content container-fluid">
                     {/* Page Header */}
